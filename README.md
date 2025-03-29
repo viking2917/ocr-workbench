@@ -82,7 +82,7 @@ I hope to set up a running demo server at some point.
 
 ## Test data
 
-The repo includes a copy of the US Constitution, and the [Trial of John Rackham[(https://discovery.nationalarchives.gov.uk/details/r/C14075679)] (the notorious pirate popularized in the TV series *Black Sails*. Both documents are in the public domain.)
+The repo includes a copy of the US Constitution, and the [Trial of John Rackham](https://discovery.nationalarchives.gov.uk/details/r/C14075679) (the notorious pirate popularized in the TV series *Black Sails*. Both documents are in the public domain.)
 
 ## Todos (in no particular order):
 
