@@ -12,6 +12,8 @@ OCR Workbench is an Ionic/Angular client.
 
 For the curious, it was largely "vibe-coded" with Claude.ai. I asked for an Ionic app with the desired features, and then refined/added features using Cursor / Claude. I have done some hand-styling, and feature tweaks, but probably 80% of the project is AI generated, as is the (rather crude) icon. :)
 
+![screenshot](images/Screenshot.png)
+
 ## Basic workflow
 
 1. Download a PDF you wish to transcribe (the repo includes some samples in the ```tests``` directory.)
