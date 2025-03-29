@@ -62,6 +62,10 @@ Note that Tesseract is free, but frequently does not work well on old (e.g. 18th
  `.gitignore` ignores the .env file, so that file will not be uploaded should you commit to git, to avoid publishing your API keys to git. 
 
 
+## Gemini Quirks
+
+On some older documents, Gemini may issue a "RECITATION" error, indicating it thinks the data is part of its training materials, or under copyright. It can do this in error, as with our test data. There is an issue filed about it somewhere :)
+
 ## Data Storage
 
 The app implements two different storage strategies: the data may be stored in the Browser using [RxDB](https://rxdb.info/), or (hypothetically) in the cloud via Firebase. Claude generated the Firebase storage implementation but it is completely untested (and would require an authentication setup as well)
@@ -76,7 +80,7 @@ I hope to set up a running demo server at some point.
 
 ## Test data
 
-The repo includes a copy of the US Constitution, and the Trial of John Rackham (the notorious pirate popularized in the TV series *Black Sails*. Both documents are in the public domain.)
+The repo includes a copy of the US Constitution, and the [Trial of John Rackham[(https://discovery.nationalarchives.gov.uk/details/r/C14075679)] (the notorious pirate popularized in the TV series *Black Sails*. Both documents are in the public domain.)
 
 ## Todos (in no particular order):
 

@@ -151,10 +151,14 @@ export class PagePage {
       this.workingText = '';
       try {
         this.workingText = await this.ocrService.performOcr(this.page.imageData, this.customPrompt, this.project?.textReplacements);
-      } catch (error) {
+      } catch (error:any) {
         console.error('Error performing OCR:', error);
         // Handle error with toast or alert
-        this.ux.showToast(error as string, 1000);
+        let errString = error.toString();
+        if(errString === 'Error: Failed to process image with Gemini') {
+          errString = 'Gemini RECITATION ERROR. See README, and try again later.';
+        }
+        this.ux.showToast(errString, 2000);
         return;
       }
 
