@@ -1,0 +1,34 @@
+<div>
+  <input type="file" #fileInput style="display: none;" webkitdirectory directory multiple
+    (change)="handleFileSelection($event)">
+
+  <ion-button (click)="pickDirectory()" [disabled]="isLoading" fill="solid" color="primary">
+    <ion-icon name="folder-open-outline" slot="start"></ion-icon>
+    Select Image Directory
+  </ion-button>
+</div>
+
+<!-- <ion-card>
+  <ion-card-header>
+    <ion-card-title>Page Images Directory</ion-card-title>
+    @if(selectedDirectory) {
+    <ion-card-subtitle>
+      Selected: {{ selectedDirectory }}
+    </ion-card-subtitle>
+    }
+  </ion-card-header>
+
+  <ion-card-content> -->
+    <!-- Hidden file input -->
+
+    <!-- @if(isLoading) {
+    <ion-progress-bar type="indeterminate"></ion-progress-bar>
+    }
+
+    @if(errorMessage) {
+    <ion-text color="danger">
+      <p>{{ errorMessage }}</p>
+    </ion-text>
+    }
+  </ion-card-content>
+</ion-card> -->

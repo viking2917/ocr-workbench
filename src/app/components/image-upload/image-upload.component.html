@@ -1,0 +1,22 @@
+<ion-button (click)="triggerFileInput()" fill="solid" color="primary">
+  <ion-icon slot="start" name="image-outline"></ion-icon>
+  Select Image
+</ion-button>
+<input type="file" id="file-input" accept="image/*" class="hidden-input" (change)="onFileSelected($event)">
+
+<!-- <ion-card>
+  <ion-card-header>
+    <ion-card-title>Upload Image</ion-card-title>
+  </ion-card-header>
+  <ion-card-content>
+    <ion-button expand="block" (click)="triggerFileInput()">
+      <ion-icon slot="start" name="image-outline"></ion-icon>
+      Select Image
+    </ion-button>
+    <input type="file" id="file-input" accept="image/*" class="hidden-input" (change)="onFileSelected($event)">
+
+    <div class="image-preview-container" *ngIf="imagePreviewUrl">
+      <img [src]="imagePreviewUrl" alt="Selected image">
+    </div>
+  </ion-card-content>
+</ion-card> -->

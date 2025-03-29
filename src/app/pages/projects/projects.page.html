@@ -1,0 +1,46 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-icon [src]="'assets/OcrIcon.svg'" size="large"></ion-icon>
+    </ion-buttons>
+   
+    <ion-title>OCR Workbench: Projects</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="addProject()">
+        <ion-icon name="add" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">projects</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-list>
+    <ion-item-sliding *ngFor="let project of projects.projects">
+      <ion-item (click)="selectProject(project.id)" detail>
+        <ion-label>
+          <h2>{{ project.title }}</h2>
+          <p>{{ project.description }}</p>
+          <!-- <ion-note>Created: {{ project.createdAt | date:'short' }}</ion-note> -->
+        </ion-label>
+      </ion-item>
+      
+      <ion-item-options side="end">
+        <ion-item-option color="danger" (click)="deleteProject($event, project.id)">
+          <ion-icon slot="icon-only" name="trash"></ion-icon>
+        </ion-item-option>
+      </ion-item-options>
+    </ion-item-sliding>
+    
+    <ion-item *ngIf="projects.projects.length === 0">
+      <ion-label class="ion-text-center">
+        No projects yet. Click the + button to create one.
+      </ion-label>
+    </ion-item>
+  </ion-list>
+</ion-content>

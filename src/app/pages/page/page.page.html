@@ -1,0 +1,86 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button [disabled]="dirty" (click)="goBack()"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Page {{pageIndex}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <!-- Image Upload Component -->
+      <app-image-upload (imageSelected)="onImageSelected($event)"></app-image-upload>
+
+      <ion-button fill="solid" color="primary" (click)="showPrompt = !showPrompt">
+        <ion-icon slot="start" name="code-working"></ion-icon>
+        Show AI Prompt
+      </ion-button>
+
+      <!-- Process Button -->
+      <ion-button fill="solid" color="primary" [disabled]="!page.imageData || isProcessing" (click)="processImage()">
+        <ion-icon slot="start" name="scan-outline"></ion-icon>
+        Extract Text
+      </ion-button>
+
+      <ion-button fill="solid" color="primary" [disabled]="!page.imageData || isProcessing" (click)="applyReplacements()">
+        <ion-icon slot="start" name="repeat"></ion-icon>
+        Apply Replacements
+      </ion-button>
+
+
+      <ion-button fill="solid" color="primary" [disabled]="!dirty" (click)="cancelEdits()">
+        <ion-icon slot="start" name="close-outline"></ion-icon>
+        Cancel Edits
+      </ion-button>
+
+      <ion-button fill="solid" color="primary" [disabled]="!dirty" (click)="saveText()">
+        <ion-icon slot="start" name="save-outline"></ion-icon>
+        Save Page
+      </ion-button>
+
+    <ion-button fill="solid" color="primary" [disabled]="dirty || pageIndex === 0" (click)="nextPage(-1)">
+      <ion-icon slot="start" name="arrow-back"></ion-icon>
+      Prev Page
+    </ion-button>
+    <ion-button fill="solid" color="primary" [disabled]="dirty || (pageIndex === nPages - 1)" (click)="nextPage(1)">
+      <ion-icon slot="start" name="arrow-forward"></ion-icon>
+      Next Page
+    </ion-button>
+
+    </ion-buttons>
+
+  </ion-toolbar>
+
+  <!-- Prompt Input Component -->
+  <app-prompt-input *ngIf="showPrompt" [defaultPrompt]="customPrompt" (promptChanged)="onPromptChanged($event)"></app-prompt-input>
+
+  <app-resizable-panes style="height: 200px;">
+    <div leftPane>
+      <!-- Content for left pane -->
+      <ion-card>
+        <ion-card-header>
+          <ion-card-title>OCR Image</ion-card-title>
+          <ion-card-subtitle>The image text was extracted from:</ion-card-subtitle> 
+        </ion-card-header>
+        <ion-card-content>
+          <!-- <ion-label position="stacked">The image text was extracted from:</ion-label> -->
+          <!-- height of editor toolbar, ish. -->
+          <div style="height: 50px;"></div>
+          <!-- Image Preview -->
+          <div class="image-preview-container" *ngIf="page.imageData">
+            <img [src]="page.imageData" alt="Selected image">
+          </div>
+        </ion-card-content>
+      </ion-card>
+    </div>
+
+    <div rightPane>
+      <!-- Content for right pane -->
+      <!-- OCR Result Component -->
+      <app-text-editor *ngIf="workingText" [text]="workingText" (textChanged)="onTextEdited($event)"></app-text-editor>
+    </div>
+  </app-resizable-panes>
+</ion-content>

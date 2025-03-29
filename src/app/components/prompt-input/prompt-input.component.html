@@ -1,0 +1,13 @@
+<ion-card>
+  <ion-card-header>
+    <ion-card-subtitle>AI Prompt</ion-card-subtitle>
+  </ion-card-header>
+  <ion-card-content>
+    <ion-textarea
+      [(ngModel)]="prompt"
+      (ionChange)="onPromptChange()"
+      placeholder="Enter your custom prompt for AI to process the OCR text"
+      [autoGrow]="true"
+    ></ion-textarea>
+  </ion-card-content>
+</ion-card>

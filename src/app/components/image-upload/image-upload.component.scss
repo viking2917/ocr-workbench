@@ -1,0 +1,21 @@
+.hidden-input {
+  display: none;
+}
+
+.image-preview-container {
+  width: 100%;
+  max-height: 40vh;
+  overflow: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #ccc;
+  margin-top: 15px;
+  background-color: #f5f5f5;
+  
+  img {
+    max-width: 100%;
+    max-height: 38vh;
+    object-fit: contain;
+  }
+}

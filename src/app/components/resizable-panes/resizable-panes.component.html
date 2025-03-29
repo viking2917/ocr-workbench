@@ -1,0 +1,14 @@
+<div class="pane-container">
+  <div #leftPane class="left-pane" [style.width]="leftPaneWidth + '%'">
+    <ng-content select="[leftPane]"></ng-content>
+  </div>
+
+  <div #divider class="divider ion-margin-top ion-margin-bottom" [style.left]="leftPaneWidth + '%'"
+    (mousedown)="onMouseDown($event)" (touchstart)="onTouchStart($event)">
+    <div class="divider-handle"></div>
+  </div>
+
+  <div #rightPane class="right-pane" [style.width]="(100 - leftPaneWidth) + '%'">
+    <ng-content select="[rightPane]"></ng-content>
+  </div>
+</div>
