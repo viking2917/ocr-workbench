@@ -86,6 +86,8 @@ The repo includes a copy of the US Constitution, and the [Trial of John Rackham]
 
 ## Todos (in no particular order):
 
+Stand up a live demo version.
+
 Implement de-hyphenization for words split across lines, with option to put combined word at end of first line or beginning of second line.
 
 implement Claude-based OCR. 
