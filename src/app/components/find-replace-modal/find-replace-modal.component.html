@@ -1,0 +1,30 @@
+<ion-modal [isOpen]="isOpen" [canDismiss]="true"
+  (willDismiss)="onDismiss()">
+  <ng-template>
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>Find and Replace</ion-title>
+        <ion-buttons slot="end">
+          <ion-button (click)="onDismiss()">
+            <ion-icon slot="icon-only" name="close-outline"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content class="ion-padding">
+      <ion-item>
+        <ion-label position="stacked">Find</ion-label>
+        <ion-input [(ngModel)]="findText" placeholder="Enter text to find"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Replace with</ion-label>
+        <ion-input [(ngModel)]="replaceText" placeholder="Enter replacement text"></ion-input>
+      </ion-item>
+      <div class="ion-padding">
+        <ion-button expand="block" (click)="onFindReplace()" [disabled]="!findText">
+          Find and Replace
+        </ion-button>
+      </div>
+    </ion-content>
+  </ng-template>
+</ion-modal> 

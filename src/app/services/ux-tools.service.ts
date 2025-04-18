@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { AlertController, LoadingController, ToastController } from '@ionic/angular/standalone';
 import { NavController } from '@ionic/angular/standalone';
 // import { IonicSafeString } from '@ionic/angular/standalone';
+import { Platform } from '@ionic/angular/standalone';
+
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +14,7 @@ export class UxToolsService {
 
   constructor(
     private navCtrl: NavController,
+    private platform: Platform,
     public alertController: AlertController,
     public loadingController: LoadingController,
     public toastController: ToastController,
@@ -80,5 +83,11 @@ export class UxToolsService {
         });
     });
   }
+
+  isDesktop(): boolean {
+    let foo = this.platform.is('desktop');
+    return foo;
+  }
+
 
 }

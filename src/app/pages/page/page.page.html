@@ -3,7 +3,12 @@
     <ion-buttons slot="start">
       <ion-back-button [disabled]="dirty" (click)="goBack()"></ion-back-button>
     </ion-buttons>
-    <ion-title>Page {{pageIndex}}</ion-title>
+    <ion-title>Page {{pageIndex}} of {{nPages}} </ion-title>
+     <ion-buttons slot="end">
+      <ion-button fill="clear" (click)="goHome()">
+        <ion-icon slot="icon-only" name="home-outline"></ion-icon>
+      </ion-button>
+     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -30,28 +35,36 @@
         Apply Replacements
       </ion-button>
 
+      <ion-button fill="solid" color="primary" [disabled]="!page.imageData || isProcessing" (click)="deHyphen()">
+        <ion-icon slot="start" name="repeat"></ion-icon>
+        DeHyphen
+      </ion-button>
+
+      <ion-button fill="solid" color="primary" [disabled]="!page.imageData || isProcessing" (click)="showFindReplace()">
+        <ion-icon slot="start" name="search"></ion-icon>
+        Find/Replace
+      </ion-button>
 
       <ion-button fill="solid" color="primary" [disabled]="!dirty" (click)="cancelEdits()">
         <ion-icon slot="start" name="close-outline"></ion-icon>
-        Cancel Edits
+        Cancel
       </ion-button>
 
       <ion-button fill="solid" color="primary" [disabled]="!dirty" (click)="saveText()">
         <ion-icon slot="start" name="save-outline"></ion-icon>
-        Save Page
+        Save
       </ion-button>
 
-    <ion-button fill="solid" color="primary" [disabled]="dirty || pageIndex === 0" (click)="nextPage(-1)">
-      <ion-icon slot="start" name="arrow-back"></ion-icon>
-      Prev Page
-    </ion-button>
-    <ion-button fill="solid" color="primary" [disabled]="dirty || (pageIndex === nPages - 1)" (click)="nextPage(1)">
-      <ion-icon slot="start" name="arrow-forward"></ion-icon>
-      Next Page
-    </ion-button>
+      <ion-button fill="solid" color="primary" [disabled]="dirty || pageIndex === 0" (click)="nextPage(-1)">
+        <ion-icon slot="start" name="arrow-back"></ion-icon>
+        Prev Page
+      </ion-button>
+      <ion-button fill="solid" color="primary" [disabled]="dirty || (pageIndex === nPages - 1)" (click)="nextPage(1)">
+        <ion-icon slot="start" name="arrow-forward"></ion-icon>
+        Next Page
+      </ion-button>
 
     </ion-buttons>
-
   </ion-toolbar>
 
   <!-- Prompt Input Component -->
@@ -80,7 +93,13 @@
     <div rightPane>
       <!-- Content for right pane -->
       <!-- OCR Result Component -->
-      <app-text-editor *ngIf="workingText" [text]="workingText" (textChanged)="onTextEdited($event)"></app-text-editor>
+      <app-text-editor *ngIf="workingText" [text]="workingText" (textChanged)="onTextEdited($event)" #textEditor></app-text-editor>
     </div>
   </app-resizable-panes>
+
+  <!-- Find/Replace Modal -->
+  <app-find-replace-modal *ngIf="showFindReplaceModal" 
+    (findReplace)="onFindReplace($event)"
+    (dismiss)="onFindReplaceDismiss()">
+  </app-find-replace-modal>
 </ion-content>

@@ -36,6 +36,7 @@ export class TextEditorComponent implements OnInit {
     this.easyMDE = new window.EasyMDE({
       sideBySideFullscreen: false, 
       element: document.getElementById('my-text-area'),
+      autoRefresh: { delay: 30 },
       renderingConfig: {
         singleLineBreaks: true, // false wraps the lines. not great for editing though,
       }
@@ -56,7 +57,8 @@ export class TextEditorComponent implements OnInit {
         this.textChanged.emit(this.editedText);
       }
     });
-    this.easyMDE.value(this.text);
+
+    setTimeout(() => { this.easyMDE.value(this.text) });
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -66,5 +68,16 @@ export class TextEditorComponent implements OnInit {
       // this.text = changes['text'].currentValue;
       this.easyMDE.value(changes['text'].currentValue);
     }
+  }
+
+  findReplace(find: string, replace: string) {
+    if (!find) return;
+    
+    const currentText = this.easyMDE.value();
+    const newText = currentText.replace(new RegExp(find, 'g'), replace);
+    
+    this.externalChange = true;
+    this.easyMDE.value(newText);
+    this.textChanged.emit(newText);
   }
 }

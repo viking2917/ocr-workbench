@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, HostListener, ViewChild } from '@angular/core';
 import { NgIf } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import {
   IonButton, IonButtons, IonBackButton,
   IonIcon, IonCardHeader, IonCard, IonCardTitle, IonCardContent,
@@ -10,11 +10,11 @@ import {
 
 
 import { addIcons } from 'ionicons';
-import { imageOutline, scanOutline, saveOutline, closeOutline, text, codeWorking, arrowForward, arrowBack, repeat } from 'ionicons/icons';
+import { imageOutline, scanOutline, saveOutline, closeOutline, text, codeWorking, arrowForward, arrowBack, repeat, search, homeOutline } from 'ionicons/icons';
 
 import { MarkdownModule } from 'ngx-markdown';
 
-import { Project, Page, applyTextReplacements } from '../../classes/classes';
+import { Project, Page, applyTextReplacements, deHyphenString } from '../../classes/classes';
 
 import { ProjectService } from '../../services/project.service';
 import { OcrService } from 'src/app/services/ocr.service';
@@ -24,6 +24,7 @@ import { ImageUploadComponent } from 'src/app/components/image-upload/image-uplo
 import { TextEditorComponent } from 'src/app/components/text-editor/text-editor.component';
 import { PromptInputComponent } from 'src/app/components/prompt-input/prompt-input.component';
 import { ResizablePanesComponent } from 'src/app/components/resizable-panes/resizable-panes.component';
+import { FindReplaceModalComponent } from 'src/app/components/find-replace-modal/find-replace-modal.component';
 
 
 @Component({
@@ -35,15 +36,18 @@ import { ResizablePanesComponent } from 'src/app/components/resizable-panes/resi
     IonButton, IonButtons, IonBackButton, IonIcon, IonCardHeader, IonCard, IonCardTitle, IonCardContent, IonCardSubtitle,
     IonContent, IonHeader, IonTitle, IonToolbar,
     ImageUploadComponent, TextEditorComponent, PromptInputComponent,
-    MarkdownModule, ResizablePanesComponent
+    MarkdownModule, ResizablePanesComponent, FindReplaceModalComponent
   ]
 })
 export class PagePage {
+  @ViewChild('textEditor') textEditor?: TextEditorComponent;
+  
   filename: string | null = null;
   workingText: string = ''; // what gets fed to the markdown editor
   editedText: string = '';  // what is tracked from when the editor emits changes
   isProcessing = false;
   showPrompt = false;
+  showFindReplaceModal = false;
 
   // extra prompt: to  Where transcription is low confidence, place the doubtful parts between angle brackets. 
   // Please extract and format the text from this image.';
@@ -78,9 +82,10 @@ export class PagePage {
     private ocrService: OcrService,
     // private claudeService: ClaudeService,
     private route: ActivatedRoute,
-    private projectService: ProjectService
+    private projectService: ProjectService,
+    private router: Router
   ) {
-    addIcons({ text, scanOutline, closeOutline, saveOutline, imageOutline, codeWorking, arrowForward, arrowBack, repeat });
+    addIcons({ text, scanOutline, closeOutline, saveOutline, imageOutline, codeWorking, arrowForward, arrowBack, repeat, search, homeOutline });
   }
 
   ionViewWillEnter() {
@@ -114,13 +119,23 @@ export class PagePage {
     return this.projectService.getProject(this.projectId).subscribe(project => {
       if (project) {
         this.project = project;
-        this.page = project.pages[this.pageIndex];
         this.nPages = project.pages.length;
-        this.workingText = '';
-        setTimeout(() => { this.workingText = this.page.editedText }); //  || this.page.rawText;
+        this.setPage(this.pageIndex);
       }
     });
   }
+
+  async setPage(pageIndex: number) {
+    if(this.project) {
+      this.pageIndex = pageIndex;
+      this.page = this.project.pages[this.pageIndex];
+      this.workingText = '';
+        setTimeout(() => {
+          this.workingText = this.page.editedText
+        }); //  || this.page.rawText;
+    }
+  }
+
 
   onImageSelected(result: { filename: string, imageData: string }) {
     if (this.page) {
@@ -186,6 +201,7 @@ export class PagePage {
     this.dirty = this.page.editedText !== editedText;
     if (this.editedText !== editedText) {
       this.editedText = editedText;
+      console.log('text changed', this.editedText);
     }
   }
 
@@ -201,6 +217,38 @@ export class PagePage {
       })
     }
   }
+
+  @HostListener('window:keydown', ['$event'])
+  handleKeyboardEvent(event: KeyboardEvent) {
+    
+    const isDesktop= this.ux.isDesktop();
+
+    const isSaveShortcut = (isDesktop && event.metaKey && event.key === 's') ||
+                           (!isDesktop && event.ctrlKey && event.key === 's');
+
+    const isNextPageShortcut = (isDesktop && event.metaKey && event.key === 'ArrowRight') ||
+                              (!isDesktop && event.ctrlKey && event.key === 'ArrowRight');
+    const isPrevPageShortcut = (isDesktop && event.metaKey && event.key === 'ArrowLeft') ||
+                              (!isDesktop && event.ctrlKey && event.key === 'ArrowLeft');
+    const isFindReplaceShortcut = (isDesktop && event.metaKey && event.key === 'f') ||
+                                  (!isDesktop && event.ctrlKey && event.key === 'f');
+    const isDeHyphenShortcut = (isDesktop && event.metaKey && event.key === 'd') ||
+                              (!isDesktop && event.ctrlKey && event.key === 'd');                        
+
+    if (isSaveShortcut) {
+      event.preventDefault();
+      this.saveText();
+    } else if (isNextPageShortcut) {
+      this.nextPage(1);
+    } else if (isPrevPageShortcut) {
+      this.nextPage(-1);
+    } else if (isDeHyphenShortcut) {
+      this.deHyphen();
+    } else if (isFindReplaceShortcut) {
+      this.showFindReplace();
+    }
+  }
+
 
   cancelEdits() {
     this.getSavedProjectData();
@@ -222,14 +270,15 @@ export class PagePage {
   // }
 
   async nextPage(direction = 1 | -1) {
-    await this.goBack();
+    // await this.goBack();
 
-    const totalPages = this.project?.pages.length || 0;
     const newIndex = this.pageIndex + direction;
     // Clamp the page index between 0 and totalPages-1, then add 1 for the URL
-    const nextPage = Math.min(Math.max(0, newIndex), totalPages - 1) + 1;
+    const nextPage = Math.min(Math.max(0, newIndex), this.nPages - 1);
 
-    this.ux.goForward('/tabs/project/' + this.projectId + '/page/' + nextPage);
+    this.setPage(nextPage);
+
+    // this.ux.goForward('/tabs/project/' + this.projectId + '/page/' + nextPage);
   }
 
   applyReplacements(): string {
@@ -244,6 +293,52 @@ export class PagePage {
     }
 
     return this.workingText;
+  }
+
+  deHyphen(): string {
+    if (!this.project) return this.editedText;
+    if (!this.workingText) return this.workingText;
+
+    let repl = deHyphenString(this.editedText || this.workingText);
+    if (repl) {
+      this.dirty = this.workingText !== repl;  // dirty if changed.
+      this.workingText = repl;  // update the editor
+      this.editedText = this.workingText;
+    }
+
+    return this.workingText;
+  }
+
+  showFindReplace() {
+    this.showFindReplaceModal = true;
+  }
+
+  onFindReplace(event: {find: string, replace: string}) {
+    console.log('here', event);
+    if (this.textEditor) {
+      this.textEditor.findReplace(event.find, event.replace);
+      this.dirty = true;
+    }
+    this.showFindReplaceModal = false;
+  }
+
+  onFindReplaceDismiss() {
+    this.showFindReplaceModal = false;
+  }
+
+  async goHome() {
+    if (!this.dirty) {
+      this.router.navigate(['/']);
+    } else {
+      let save = await this.ux.confirm('Edits not saved', `You have edits to your data. If you want to keep 
+        them, hit Save Page before going home`, '', `Save`, `Don't Save`);
+      if (save) {
+        this.saveText();
+        this.router.navigate(['/']);
+      } else {
+        this.router.navigate(['/']);
+      }
+    }
   }
 
 } 
