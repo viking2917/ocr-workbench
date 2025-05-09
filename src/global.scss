@@ -43,4 +43,17 @@
   --ion-color-primary-contrast-rgb: 255, 255, 255;
   --ion-color-primary-shade: #009ae0;
   --ion-color-primary-tint: #1ab7ff;
+
+  --ion-font-family: 'Fira Sans', Roboto, sans-serif;
+  --ion-text-font-family: "Libre Caslon Text", serif;
+  --text-line-height: 1.2;
+  --text-font-size: 16px;
+}
+
+
+
+#my-text-area, .EasyMDEContainer {
+  font-family: var(--ion-text-font-family);
+  font-size: var(--text-font-size);
+  line-height: var(--text-line-height);
 }

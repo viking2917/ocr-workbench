@@ -2,3 +2,33 @@ ion-buttons {
     flex-wrap: wrap; 
     gap: 4px;
 }
+
+.text-controls {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0 1rem;
+  
+  ion-item {
+    --padding-start: 0;
+    --padding-end: 0;
+    --min-height: 40px;
+    
+    ion-label {
+      min-width: 80px;
+    }
+  }
+  
+  .range-value {
+    min-width: 45px;
+    text-align: right;
+    padding-left: 8px;
+    font-size: 14px;
+    color: var(--ion-color-medium);
+  }
+}
+
+.editor-content {
+  line-height: var(--text-line-height, 1.5);
+  font-size: var(--text-font-size, 16px);
+}

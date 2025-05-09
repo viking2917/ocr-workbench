@@ -6,11 +6,12 @@ import {
   IonButton, IonButtons, IonBackButton,
   IonIcon, IonCardHeader, IonCard, IonCardTitle, IonCardContent,
   IonContent, IonHeader, IonTitle, IonToolbar, IonCardSubtitle,
+  IonRange, IonItem, IonLabel
 } from '@ionic/angular/standalone';
 
 
 import { addIcons } from 'ionicons';
-import { imageOutline, scanOutline, saveOutline, closeOutline, text, codeWorking, arrowForward, arrowBack, repeat, search, homeOutline } from 'ionicons/icons';
+import { imageOutline, scanOutline, saveOutline, closeOutline, text, codeWorking, caretDown, arrowForward, arrowBack, repeat, search, homeOutline } from 'ionicons/icons';
 
 import { MarkdownModule } from 'ngx-markdown';
 
@@ -36,7 +37,8 @@ import { FindReplaceModalComponent } from 'src/app/components/find-replace-modal
     IonButton, IonButtons, IonBackButton, IonIcon, IonCardHeader, IonCard, IonCardTitle, IonCardContent, IonCardSubtitle,
     IonContent, IonHeader, IonTitle, IonToolbar,
     ImageUploadComponent, TextEditorComponent, PromptInputComponent,
-    MarkdownModule, ResizablePanesComponent, FindReplaceModalComponent
+    MarkdownModule, ResizablePanesComponent, FindReplaceModalComponent,
+    IonRange, IonItem, IonLabel
   ]
 })
 export class PagePage {
@@ -47,6 +49,7 @@ export class PagePage {
   editedText: string = '';  // what is tracked from when the editor emits changes
   isProcessing = false;
   showPrompt = false;
+  showTextControls = false;
   showFindReplaceModal = false;
 
   // extra prompt: to  Where transcription is low confidence, place the doubtful parts between angle brackets. 
@@ -76,6 +79,10 @@ export class PagePage {
 
   dirty: boolean = false;
 
+  // Add new properties for text controls
+  lineHeight: number = 1.2;  // default value
+  fontSize: number = 16;     // default value
+
   constructor(
     public ux: UxToolsService,
 
@@ -85,7 +92,7 @@ export class PagePage {
     private projectService: ProjectService,
     private router: Router
   ) {
-    addIcons({ text, scanOutline, closeOutline, saveOutline, imageOutline, codeWorking, arrowForward, arrowBack, repeat, search, homeOutline });
+    addIcons({ text, scanOutline, closeOutline, saveOutline, imageOutline, codeWorking, caretDown, arrowForward, arrowBack, repeat, search, homeOutline });
   }
 
   ionViewWillEnter() {
@@ -97,6 +104,11 @@ export class PagePage {
       this.pageIndex = parseInt(pageIndex || '1') - 1;
       this.getSavedProjectData();
     }
+
+    // Initialize text control values from CSS variables or defaults
+    const styles = getComputedStyle(document.documentElement);
+    this.lineHeight = parseFloat(styles.getPropertyValue('--text-line-height')); //  || 1.5;
+    this.fontSize = parseInt(styles.getPropertyValue('--text-font-size').replace("px", "")); //  || 16;
   }
 
   async goBack() {
@@ -107,7 +119,7 @@ export class PagePage {
       let save = await this.ux.confirm('Edits not saved', `You have edits to your data. If you want to keep 
         them, hit Save Page before going back`, '', `Save`, `Don't Save`);
       if (save) {
-        this.saveText();
+        await this.saveText();
         this.ux.goBack();
       } else {
         this.ux.goBack();
@@ -125,14 +137,14 @@ export class PagePage {
     });
   }
 
-  async setPage(pageIndex: number) {
-    if(this.project) {
+  setPage(pageIndex: number) {
+    if (this.project) {
       this.pageIndex = pageIndex;
       this.page = this.project.pages[this.pageIndex];
       this.workingText = '';
-        setTimeout(() => {
-          this.workingText = this.page.editedText
-        }); //  || this.page.rawText;
+      setTimeout(() => {
+        this.workingText = this.page.editedText
+      }); //  || this.page.rawText;
     }
   }
 
@@ -205,16 +217,19 @@ export class PagePage {
     }
   }
 
-  saveText() {
+  async saveText() {
     if (!this.editedText) return;
 
     this.page.editedText = this.editedText;
     if (this.project) {
       this.project.pages[this.pageIndex] = this.page;
-      this.projectService.saveProject(this.project).then(() => {
+      await this.projectService.saveProject(this.project).then(() => {
         this.ux.showToast('Page saved');
         this.dirty = false;
-      })
+      });
+      return true
+    } else {
+      return false;
     }
   }
 
@@ -333,12 +348,24 @@ export class PagePage {
       let save = await this.ux.confirm('Edits not saved', `You have edits to your data. If you want to keep 
         them, hit Save Page before going home`, '', `Save`, `Don't Save`);
       if (save) {
-        this.saveText();
+        await this.saveText();
         this.router.navigate(['/']);
       } else {
         this.router.navigate(['/']);
       }
     }
+  }
+
+  onLineHeightChange(event: any) {
+    const value = event.detail.value;
+    this.lineHeight = value; // Update the component property
+    document.documentElement.style.setProperty('--text-line-height', value);
+  }
+  
+  onFontSizeChange(event: any) {
+    const value = event.detail.value;
+    this.fontSize = value; // Update the component property
+    document.documentElement.style.setProperty('--text-font-size', `${value}px`);
   }
 
 } 

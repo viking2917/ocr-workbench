@@ -4,11 +4,11 @@
       <ion-back-button [disabled]="dirty" (click)="goBack()"></ion-back-button>
     </ion-buttons>
     <ion-title>Page {{pageIndex}} of {{nPages}} </ion-title>
-     <ion-buttons slot="end">
+    <ion-buttons slot="end">
       <ion-button fill="clear" (click)="goHome()">
         <ion-icon slot="icon-only" name="home-outline"></ion-icon>
       </ion-button>
-     </ion-buttons>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -20,9 +20,15 @@
       <app-image-upload (imageSelected)="onImageSelected($event)"></app-image-upload>
 
       <ion-button fill="solid" color="primary" (click)="showPrompt = !showPrompt">
-        <ion-icon slot="start" name="code-working"></ion-icon>
-        Show AI Prompt
+        <ion-icon slot="start" name="caret-down"></ion-icon>
+        AI Prompt
       </ion-button>
+      <ion-button fill="solid" color="primary" (click)="showTextControls = !showTextControls">
+        <ion-icon slot="start" name="caret-down"></ion-icon>
+        Text Controls
+      </ion-button>
+
+
 
       <!-- Process Button -->
       <ion-button fill="solid" color="primary" [disabled]="!page.imageData || isProcessing" (click)="processImage()">
@@ -30,7 +36,8 @@
         Extract Text
       </ion-button>
 
-      <ion-button fill="solid" color="primary" [disabled]="!page.imageData || isProcessing" (click)="applyReplacements()">
+      <ion-button fill="solid" color="primary" [disabled]="!page.imageData || isProcessing"
+        (click)="applyReplacements()">
         <ion-icon slot="start" name="repeat"></ion-icon>
         Apply Replacements
       </ion-button>
@@ -45,6 +52,15 @@
         Find/Replace
       </ion-button>
 
+      <ion-button fill="solid" color="primary" [disabled]="dirty || pageIndex === 0" (click)="nextPage(-1)">
+        <ion-icon slot="start" name="arrow-back"></ion-icon>
+        Prev Page
+      </ion-button>
+      <ion-button fill="solid" color="primary" [disabled]="dirty || (pageIndex === nPages - 1)" (click)="nextPage(1)">
+        <ion-icon slot="start" name="arrow-forward"></ion-icon>
+        Next Page
+      </ion-button>
+
       <ion-button fill="solid" color="primary" [disabled]="!dirty" (click)="cancelEdits()">
         <ion-icon slot="start" name="close-outline"></ion-icon>
         Cancel
@@ -55,20 +71,31 @@
         Save
       </ion-button>
 
-      <ion-button fill="solid" color="primary" [disabled]="dirty || pageIndex === 0" (click)="nextPage(-1)">
-        <ion-icon slot="start" name="arrow-back"></ion-icon>
-        Prev Page
-      </ion-button>
-      <ion-button fill="solid" color="primary" [disabled]="dirty || (pageIndex === nPages - 1)" (click)="nextPage(1)">
-        <ion-icon slot="start" name="arrow-forward"></ion-icon>
-        Next Page
-      </ion-button>
-
     </ion-buttons>
   </ion-toolbar>
 
   <!-- Prompt Input Component -->
-  <app-prompt-input *ngIf="showPrompt" [defaultPrompt]="customPrompt" (promptChanged)="onPromptChanged($event)"></app-prompt-input>
+  <app-prompt-input *ngIf="showPrompt" [defaultPrompt]="customPrompt"
+    (promptChanged)="onPromptChanged($event)"></app-prompt-input>
+
+  <!-- Add text controls -->
+  <div class="text-controls" *ngIf="showTextControls">
+    <ion-item lines="none">
+      <ion-label>Line Height</ion-label>
+      <ion-range [min]="1" [max]="3" [step]="0.1" [value]="lineHeight" (ionInput)="onLineHeightChange($event)" pin
+        style="width: 150px;">
+        <div slot="end" class="range-value">{{lineHeight}}</div>
+      </ion-range>
+    </ion-item>
+
+    <ion-item lines="none">
+      <ion-label>Font Size</ion-label>
+      <ion-range [min]="8" [max]="36" [step]="1" [value]="fontSize" (ionInput)="onFontSizeChange($event)" pin
+        style="width: 150px;">
+        <div slot="end" class="range-value">{{fontSize}}px</div>
+      </ion-range>
+    </ion-item>
+  </div>
 
   <app-resizable-panes style="height: 200px;">
     <div leftPane>
@@ -76,7 +103,7 @@
       <ion-card>
         <ion-card-header>
           <ion-card-title>OCR Image</ion-card-title>
-          <ion-card-subtitle>The image text was extracted from:</ion-card-subtitle> 
+          <ion-card-subtitle>The image text was extracted from:</ion-card-subtitle>
         </ion-card-header>
         <ion-card-content>
           <!-- <ion-label position="stacked">The image text was extracted from:</ion-label> -->
@@ -93,13 +120,13 @@
     <div rightPane>
       <!-- Content for right pane -->
       <!-- OCR Result Component -->
-      <app-text-editor *ngIf="workingText" [text]="workingText" (textChanged)="onTextEdited($event)" #textEditor></app-text-editor>
+      <app-text-editor *ngIf="workingText" [text]="workingText" (textChanged)="onTextEdited($event)"
+        #textEditor></app-text-editor>
     </div>
   </app-resizable-panes>
 
   <!-- Find/Replace Modal -->
-  <app-find-replace-modal *ngIf="showFindReplaceModal" 
-    (findReplace)="onFindReplace($event)"
+  <app-find-replace-modal *ngIf="showFindReplaceModal" (findReplace)="onFindReplace($event)"
     (dismiss)="onFindReplaceDismiss()">
   </app-find-replace-modal>
 </ion-content>
