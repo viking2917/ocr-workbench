@@ -1,30 +1,47 @@
-import { Component } from '@angular/core';
-import { IonHeader, IonToolbar, IonTitle, IonContent, IonIcon, IonList, IonItem, IonSelect, IonSelectOption,  } from '@ionic/angular/standalone';
-import { NgFor } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
+import { IonicModule } from '@ionic/angular';
 import { FormsModule } from '@angular/forms';
-
-import { addIcons } from 'ionicons';
-import { newspaper } from 'ionicons/icons';
-
+import { CommonModule } from '@angular/common';
 import { OcrService } from '../services/ocr.service';
+import { addIcons } from 'ionicons';
+import { newspaper, key, trashOutline } from 'ionicons/icons';
 
 @Component({
   selector: 'app-settings',
-  templateUrl: 'settings.page.html',
-  styleUrls: ['settings.page.scss'],
-  imports: [IonHeader, IonToolbar, IonTitle, IonContent, 
-    IonList, IonItem, IonSelect, IonSelectOption, IonIcon,
-    FormsModule, NgFor]
+  templateUrl: './settings.page.html',
+  styleUrls: ['./settings.page.scss'],
+  standalone: true,
+  imports: [IonicModule, FormsModule, CommonModule]
 })
-export class SettingsPage {
-  ocrStrategies: string[] = [''];
+export class SettingsPage implements OnInit {
+  ocrStrategies: string[] = [];
+  geminiApiKey: string = '';
 
   constructor(public ocrService: OcrService) {
-    addIcons({ newspaper });
-    this.ocrStrategies = this.ocrService.strategies;
+    addIcons({ newspaper, key, trashOutline });
   }
 
-  handleChange(event: CustomEvent) {
-    this.ocrService.setStorageStrategy(event.detail.value, true);
+  ngOnInit() {
+    this.ocrStrategies = this.ocrService.strategies;
+    // Load saved API key from localStorage
+    this.geminiApiKey = localStorage.getItem('geminiApiKey') || '';
+  }
+
+  handleChange(event: any) {
+    this.ocrService.setStorageStrategy(event.detail.value);
+  }
+
+  onApiKeyChange(event: any) {
+    const newKey = event.detail.value;
+    if (newKey) {
+      localStorage.setItem('geminiApiKey', newKey);
+    } else {
+      localStorage.removeItem('geminiApiKey');
+    }
+  }
+
+  clearApiKey() {
+    this.geminiApiKey = '';
+    localStorage.removeItem('geminiApiKey');
   }
 }

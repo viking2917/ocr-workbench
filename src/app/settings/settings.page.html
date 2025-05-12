@@ -29,6 +29,22 @@
           </ion-select-option>
         </ion-select>
       </ion-item>
+
+      <!-- Add Gemini API Key input -->
+      <ion-item lines="none">
+        <ion-icon slot="start" name="key"></ion-icon>
+        <ion-input
+          label="Gemini API Key"
+          labelPlacement="floating"
+          type="password"
+          [(ngModel)]="geminiApiKey"
+          (ionChange)="onApiKeyChange($event)"
+          placeholder="Enter your Gemini API key">
+        </ion-input>
+        <ion-button fill="clear" slot="end" (click)="clearApiKey()">
+          <ion-icon name="trash-outline"></ion-icon>
+        </ion-button>
+      </ion-item>
     </ion-list>
   </div>
   

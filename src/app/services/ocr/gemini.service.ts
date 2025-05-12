@@ -11,14 +11,22 @@ interface GeminiResponse {
       }>;
     };
     finishReason?: string;
-  }>;
+  }>,
+  error?: {
+    code: number;
+    message: string;
+  }
 }
 
 @Injectable({
   providedIn: 'root'
 })
 export class GeminiService implements OcrStrategy {
-  private apiKey = environment.GEMINI_API_KEY;
+  private get apiKey(): string {
+    // First check localStorage, then fall back to environment
+    return localStorage.getItem('geminiApiKey') || environment.GEMINI_API_KEY;
+  }
+  
   private apiUrl = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent'
 
   constructor(private http: RequestService) { }
@@ -30,6 +38,11 @@ export class GeminiService implements OcrStrategy {
   async performOcr(imageData: string, customPrompt: string): Promise<string> {
     if (environment.useMockGeminiApi) {
       return this.simulateGeminiProcessing(imageData, customPrompt);
+    }
+
+    const apiKey = this.apiKey;
+    if (!apiKey) {
+      throw new Error('No Gemini API key found. Please set one in the settings page.');
     }
 
     try {
@@ -52,17 +65,19 @@ export class GeminiService implements OcrStrategy {
 
       const headers: HeadersInit = {
         'Content-Type': 'application/json',
-        'x-goog-api-key': this.apiKey
+        'x-goog-api-key': apiKey
       };
 
       const response = await this.http.post<GeminiResponse>(
-        `${this.apiUrl}?key=${this.apiKey}`,
+        `${this.apiUrl}?key=${apiKey}`,
         requestBody,
         headers
       );
 
 
-      if ( response && response.candidates && response.candidates[0]?.finishReason && 
+      if (response && response.hasOwnProperty('error') && response.error && (response.error.message.search('API key') !== -1)) {
+        throw new Error('Gemini API key error: ' + response.error.message);
+      } else if ( response && response.candidates && response.candidates[0]?.finishReason && 
         response.candidates[0]?.finishReason === 'RECITATION' ) {
 
           // API seems to hork a lot on old text, thinking it is copyright...
@@ -75,8 +90,9 @@ export class GeminiService implements OcrStrategy {
       console.log('Gemini API Response:', text);
       return text;
     } catch (error) {
-      console.error('Gemini API Error:', error);
-      throw new Error('Failed to process image with Gemini');
+      console.log('Gemini API Error:', error);
+      throw error;
+      // throw new Error('Failed to process image with Gemini');
     }
   }
 
