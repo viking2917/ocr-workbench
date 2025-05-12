@@ -3,9 +3,12 @@
 
 .env
 
+*.key
+*.json
+.firebase/
+.firebaserc
+
 cache
-
-
 
 *~
 *.sw[mnpcod]

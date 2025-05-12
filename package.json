@@ -4,6 +4,7 @@
   "author": "Ionic Framework",
   "homepage": "https://ionicframework.com/",
   "scripts": {
+    "deploy": "ionic build --prod && firebase deploy",
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",

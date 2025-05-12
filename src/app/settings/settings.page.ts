@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { IonicModule } from '@ionic/angular';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { IonToolbar, IonTitle, IonHeader, IonContent, IonIcon, IonButton, IonInput, IonItem, IonList, IonSelect, IonSelectOption } from '@ionic/angular/standalone';
+
 import { OcrService } from '../services/ocr.service';
 import { addIcons } from 'ionicons';
 import { newspaper, key, trashOutline } from 'ionicons/icons';
@@ -11,7 +12,7 @@ import { newspaper, key, trashOutline } from 'ionicons/icons';
   templateUrl: './settings.page.html',
   styleUrls: ['./settings.page.scss'],
   standalone: true,
-  imports: [IonicModule, FormsModule, CommonModule]
+  imports: [FormsModule, CommonModule, IonHeader, IonTitle, IonContent, IonIcon, IonButton, IonInput, IonToolbar, IonItem, IonList, IonSelect, IonSelectOption]
 })
 export class SettingsPage implements OnInit {
   ocrStrategies: string[] = [];
