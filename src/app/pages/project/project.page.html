@@ -18,7 +18,6 @@
   </ion-header>
 
   <ion-toolbar>
-
     <ion-buttons slot="start">
       <app-directory-image-picker (imagesSelected)="handleImagesSelected($event)"></app-directory-image-picker>
 
@@ -37,72 +36,61 @@
     </ion-buttons>
   </ion-toolbar>
 
-<!-- Add this after the existing ion-card -->
- 
-
-<ion-card *ngIf="showReplacements">
-  <ion-card-header>
-    <ion-card-title>Text Replacements</ion-card-title>
-  </ion-card-header>
-  <ion-card-content>
-    <ion-list>
-      @for(replacement of project.textReplacements; track $index) {
-      <ion-item>
-        <ion-input label="Original" type="text" placeholder="original text" [(ngModel)]="replacement.original"></ion-input>
-        <ion-input label="Replacement" type="text" placeholder="new text" [(ngModel)]="replacement.replacement"></ion-input>
-        <ion-toggle [(ngModel)]="replacement.enabled"></ion-toggle>
-        <ion-button fill="clear" color="danger" (click)="removeReplacement($index)">
-          <ion-icon name="trash"></ion-icon>
-        </ion-button>
-      </ion-item>
-      }
-    </ion-list>
-    <ion-button (click)="addReplacement()">
-      <ion-icon name="add" slot="start"></ion-icon>
-      Add Replacement
-    </ion-button>
-  </ion-card-content>
-</ion-card>
-
-  <!-- <ion-card>
+  <ion-card *ngIf="showReplacements">
     <ion-card-header>
-      <ion-card-title>Page Images ({{ project.pages.length }})</ion-card-title>
+      <ion-card-title>Text Replacements</ion-card-title>
     </ion-card-header>
-    <ion-card-content> -->
-  @if(project.pages.length > 0) {
-    <div class="image-list">
-      <!-- <ion-text>
-        <h3>Found {{ project.pages.length }} images</h3>
-      </ion-text> -->
-
-      <ion-grid>
-        <ion-row>
-          @for(page of project.pages; track $index) {
-          <ion-col size="7" size-md="4" size-lg="3">
-
-            <ion-card class="image-card" (click)="openPage($index)" style="cursor: pointer;">
-              <img alt="page Image preview" [src]="page.imageData" />           
-              <ion-card-content>
-
-              </ion-card-content>
-              <ion-button (click)="openPage($index)" fill="clear">Edit</ion-button>
-              @if(page.editedText) {
-                <ion-icon name="document-text" size="large" style="position: absolute; top: 8px; right: 8px; color: var(--ion-color-primary);"
-                  [title]="page.editedText"></ion-icon>
-              }
-            </ion-card>
-          </ion-col>
+    <ion-card-content>
+      <ion-list>
+        @for(replacement of project.textReplacements; track $index) {
+        <ion-item>
+          <ion-input label="Original" type="text" placeholder="original text"
+            [(ngModel)]="replacement.original"></ion-input>
+          <ion-input label="Replacement" type="text" placeholder="new text"
+            [(ngModel)]="replacement.replacement"></ion-input>
+          <ion-toggle [(ngModel)]="replacement.enabled"></ion-toggle>
+          <ion-button fill="clear" color="danger" (click)="removeReplacement($index)">
+            <ion-icon name="trash"></ion-icon>
+          </ion-button>
+        </ion-item>
         }
-        </ion-row>
-      </ion-grid>
-    </div>
-    }
-
-    @if(project.pages.length === 0) {
-    <ion-text>
-      <p>No images found. Select a directory to view images.</p>
-    </ion-text>
-    }
-    <!-- </ion-card-content> 
+      </ion-list>
+      <ion-button (click)="addReplacement()">
+        <ion-icon name="add" slot="start"></ion-icon>
+        Add Replacement
+      </ion-button>
+    </ion-card-content>
   </ion-card>
-</ion-content> -->
+
+  @if(project.pages.length > 0) {
+  <div class="image-list">
+    <ion-grid>
+      <ion-row>
+        @for(page of project.pages; track $index) {
+        <ion-col size="7" size-md="4" size-lg="3">
+
+          <ion-card class="image-card" (click)="openPage($index)" style="cursor: pointer;">
+            <img alt="page Image preview" [src]="page.imageData" />
+            <ion-card-content>
+
+            </ion-card-content>
+            <ion-button (click)="openPage($index)" fill="clear">Edit</ion-button>
+            @if(page.editedText) {
+            <ion-icon name="document-text" size="large"
+              style="position: absolute; top: 8px; right: 8px; color: var(--ion-color-primary);"
+              [title]="page.editedText"></ion-icon>
+            }
+          </ion-card>
+        </ion-col>
+        }
+      </ion-row>
+    </ion-grid>
+  </div>
+  }
+
+  @if(project.pages.length === 0) {
+  <ion-text>
+    <p>No images found. Select a directory to view images.</p>
+  </ion-text>
+  }
+</ion-content>

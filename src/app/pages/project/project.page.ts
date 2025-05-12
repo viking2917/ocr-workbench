@@ -6,7 +6,6 @@ import { IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonBackButton,
   IonGrid, IonRow, IonCol, AlertController
  } from '@ionic/angular/standalone';
 
-// import { AlertController } from '@ionic/angular';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { addIcons } from 'ionicons';
@@ -59,9 +58,6 @@ export class ProjectPage {
   }
 
   handleImagesSelected(pages: Page[]) {
-    console.log('Selected images:', pages);
-    // Do something with the images
-
     this.project.pages = pages;
 
     this.projectService.saveProject(this.project).then(result => {

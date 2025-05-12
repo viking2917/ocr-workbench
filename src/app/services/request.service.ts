@@ -7,9 +7,6 @@ export class RequestService {
 
   constructor() { }
 
-  // https://www.newline.co/@bespoyasov/how-to-use-fetch-with-typescript--a81ac257
-
-  // for a cached fetch look at: https://github.com/abhishekasana/jsDevelopCell/blob/master/cached_fetch.js
   async request<TResponse>(url: string, config?: RequestInit): Promise<TResponse> {
     const debug = 0;
     debug && console.log('requesting', url);

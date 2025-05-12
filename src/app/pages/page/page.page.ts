@@ -87,7 +87,6 @@ export class PagePage {
     public ux: UxToolsService,
 
     private ocrService: OcrService,
-    // private claudeService: ClaudeService,
     private route: ActivatedRoute,
     private projectService: ProjectService,
     private router: Router
@@ -270,30 +269,13 @@ export class PagePage {
     this.dirty = false;
   }
 
-  // exportText() {
-  //   // const text = this.editableText;
-  //   const blob = new Blob([this.page.editedText], { type: 'text/plain' });
-  //   const url = URL.createObjectURL(blob);
-
-  //   const a = document.createElement('a');
-  //   a.href = url;
-  //   a.download = this.filename + '.md'; // 'ocr-edited-text.txt';
-  //   document.body.appendChild(a);
-  //   a.click();
-  //   document.body.removeChild(a);
-  //   URL.revokeObjectURL(url);
-  // }
-
   async nextPage(direction = 1 | -1) {
-    // await this.goBack();
 
     const newIndex = this.pageIndex + direction;
     // Clamp the page index between 0 and totalPages-1, then add 1 for the URL
     const nextPage = Math.min(Math.max(0, newIndex), this.nPages - 1);
 
     this.setPage(nextPage);
-
-    // this.ux.goForward('/tabs/project/' + this.projectId + '/page/' + nextPage);
   }
 
   applyReplacements(): string {

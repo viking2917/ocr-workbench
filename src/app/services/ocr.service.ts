@@ -1,7 +1,4 @@
 import { Injectable } from '@angular/core';
-import * as Tesseract from 'tesseract.js';
-
-// import { MarkdownService } from 'ngx-markdown';
 
 type OcrStrategyType = 'Tesseract' | 'Gemini'; // 'Claude' |
 const existingStrategies = ['Tesseract', 'Gemini']; // 'Claude' |
@@ -22,7 +19,6 @@ export class OcrService {
   public currentStrategy: OcrStrategyType = 'Tesseract';
 
   constructor(
-    // private markdownService: MarkdownService,
     private http: RequestService,
   ) {
 

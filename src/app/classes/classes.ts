@@ -82,9 +82,7 @@ export function applyTextReplacements(text: string, replacements: TextReplacemen
 export function deHyphenString(text: string): string {
   if (!text) return text;
 
-  console.log('deHyphen', text);
   const newText = text.replace(/(\w+)-\r?\n(\w+)/g, '\n$1$2');
-  console.log('newText', newText);
   return newText;
 
 }

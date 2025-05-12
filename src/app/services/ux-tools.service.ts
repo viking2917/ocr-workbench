@@ -1,9 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AlertController, LoadingController, ToastController } from '@ionic/angular/standalone';
 import { NavController } from '@ionic/angular/standalone';
-// import { IonicSafeString } from '@ionic/angular/standalone';
 import { Platform } from '@ionic/angular/standalone';
-
 
 @Injectable({
   providedIn: 'root'
@@ -13,11 +11,12 @@ export class UxToolsService {
   currentToast: HTMLIonToastElement | false = false;
 
   constructor(
-    private navCtrl: NavController,
-    private platform: Platform,
     public alertController: AlertController,
     public loadingController: LoadingController,
     public toastController: ToastController,
+    
+    private navCtrl: NavController,
+    private platform: Platform,
   ) { }
 
   async loading(message: string = 'Please wait...') {

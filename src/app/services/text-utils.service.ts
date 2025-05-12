@@ -27,7 +27,6 @@ export class TextUtilsService {
     return content;
   }
 
-
   fixHTMLEntities(text: string) {
     // Replace encoded HTML newline with R character
     let newText = text.replace(/&#10;/g, `
