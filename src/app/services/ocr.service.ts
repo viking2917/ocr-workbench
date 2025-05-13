@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 
 type OcrStrategyType = 'Tesseract' | 'Gemini'; // 'Claude' |
-const existingStrategies = ['Tesseract', 'Gemini']; // 'Claude' |
 
 import { TextReplacement, applyTextReplacements } from '../classes/classes';
 import { RequestService } from './request.service';
@@ -15,7 +14,7 @@ import { GeminiService } from './ocr/gemini.service';
 })
 export class OcrService {
   private ocrStrategy: OcrStrategy;
-  public strategies = existingStrategies; 
+  public strategies = ['Tesseract', 'Gemini']; // 'Claude' |
   public currentStrategy: OcrStrategyType = 'Tesseract';
 
   constructor(

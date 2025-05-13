@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonText, IonToolbar, IonTitle, IonHeader, IonContent, IonIcon, IonButton, IonInput, IonItem, IonList, IonSelect, IonSelectOption } from '@ionic/angular/standalone';
+import { NgFor } from '@angular/common';
+import { IonRadio, IonRadioGroup, IonLabel, IonToolbar, IonTitle, IonHeader, IonContent, IonIcon, IonButton, IonInput, IonItem, IonList } from '@ionic/angular/standalone';
 
 import { OcrService } from '../services/ocr.service';
 import { addIcons } from 'ionicons';
@@ -12,8 +12,8 @@ import { newspaper, key, trashOutline } from 'ionicons/icons';
   templateUrl: './settings.page.html',
   styleUrls: ['./settings.page.scss'],
   standalone: true,
-  imports: [FormsModule, CommonModule, IonText, IonHeader, IonTitle, IonContent, IonIcon, IonButton, IonInput, 
-    IonToolbar, IonItem, IonList, IonSelect, IonSelectOption],
+  imports: [FormsModule, NgFor, IonRadioGroup, IonRadio, IonLabel, IonHeader, IonTitle, IonContent, 
+    IonIcon, IonButton, IonInput, IonToolbar, IonItem, IonList],
 })
 export class SettingsPage implements OnInit {
   ocrStrategies: string[] = [];
@@ -32,7 +32,7 @@ export class SettingsPage implements OnInit {
   handleOcrChange(event: any) {
     const selectedStrategy = event.detail.value;
     console.log('Selected OCR strategy:', selectedStrategy);
-    this.ocrService.setStorageStrategy(event.detail.value);
+    this.ocrService.setStorageStrategy(selectedStrategy, true);
     return false;
   }
 

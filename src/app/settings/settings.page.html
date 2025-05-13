@@ -6,39 +6,36 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true" style="background-color: #d4ccc0;">
+<ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
       <ion-title size="large">Settings</ion-title>
     </ion-toolbar>
   </ion-header>
 
-  <div style="background: #d4ccc0; width: 100%; height: 100%; z-index: 0; position: absolute; top: 0; left: 0;">
+  <div class="ion-content-container">
+    <div>
+      <ion-list style="padding-top: 3rem;">
+        <ion-item lines="none">
+          <ion-icon slot="start" name="newspaper"></ion-icon>
+          <ion-label>OCR Strategy</ion-label>
+          <ion-radio-group slot="end" [value]="ocrService.currentStrategy" (ionChange)="handleOcrChange($event)">
+            <ion-radio label="OCR Strategy" labelPlacement="start" justify="end" *ngFor="let s of ocrStrategies"
+              [value]="s">{{s}}</ion-radio><br />
+          </ion-radio-group>
+        </ion-item>
+
+        <!-- Add Gemini API Key input -->
+        <ion-item lines="none">
+          <ion-icon slot="start" name="key"></ion-icon>
+          <ion-input label="Gemini API Key" labelPlacement="floating" type="password" [(ngModel)]="geminiApiKey"
+            (ionChange)="onApiKeyChange($event)" placeholder="Enter your Gemini API key">
+          </ion-input>
+          <ion-button fill="clear" slot="end" (click)="clearApiKey()">
+            <ion-icon name="trash-outline"></ion-icon>
+          </ion-button>
+        </ion-item>
+      </ion-list>
+    </div>
   </div>
-
-  <div class="ion-text-center ion-justify-content-center" style="display: flex;width: 100%; height: 100%;">
-    <ion-list style="padding-top: 3rem;  margin: 0 auto; min-width: 50%;">
-      <ion-item lines="none">
-        <ion-icon slot="start" name="newspaper"></ion-icon>
-
-        <!-- [(ngModel)]="ocrService.currentStrategy" -->
-        <ion-select label="OCR Strategy"  (ionChange)="handleOcrChange($event)">
-          <ion-select-option *ngFor="let s of ocrStrategies" [value]="s">{{s}}
-          </ion-select-option>
-        </ion-select>
-      </ion-item>
-
-      <!-- Add Gemini API Key input -->
-      <ion-item lines="none">
-        <ion-icon slot="start" name="key"></ion-icon>
-        <ion-input label="Gemini API Key" labelPlacement="floating" type="password" [(ngModel)]="geminiApiKey"
-          (ionChange)="onApiKeyChange($event)" placeholder="Enter your Gemini API key">
-        </ion-input>
-        <ion-button fill="clear" slot="end" (click)="clearApiKey()">
-          <ion-icon name="trash-outline"></ion-icon>
-        </ion-button>
-      </ion-item>
-    </ion-list>
-  </div>
-
 </ion-content>

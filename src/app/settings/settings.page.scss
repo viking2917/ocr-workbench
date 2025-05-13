@@ -1,0 +1,16 @@
+ion-header {
+  max-width: 40rem;
+  margin: 0 auto;
+}
+
+ion-content {
+  --ion-background-color: #d4ccc0;
+}
+
+.ion-content-container {
+  background: white;
+  --ion-background-color: white;
+  max-width: 40rem;  
+  height: 100%;
+  margin: 0 auto !important;
+}
