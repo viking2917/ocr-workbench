@@ -14,6 +14,8 @@ For the curious, it was largely "vibe-coded" with Claude.ai. I asked for an Ioni
 
 ![screenshot](images/Screenshot.png)
 
+A live demo is currently running here, BYO API Key: [https://ocr-workbench.web.app/](https://ocr-workbench.web.app/) 
+
 ## Basic workflow
 
 1. Download a PDF you wish to transcribe (the repo includes some samples in the ```tests``` directory.)
@@ -84,15 +86,11 @@ Note that therefore your data is tied to your url, so if, for example, you switc
 2. Clone the repo.
 3. `ionic serve`
 
-I hope to set up a running demo page at some point.
-
 ## Test data
 
 The repo includes a copy of the US Constitution, and the [Trial of John Rackham](https://discovery.nationalarchives.gov.uk/details/r/C14075679) (the notorious pirate popularized in the TV series *Black Sails*). Both documents are in the public domain.
 
 ## Todos (in no particular order):
-
-Stand up a live demo version.
 
 implement Claude-based OCR. 
 

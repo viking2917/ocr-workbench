@@ -15,7 +15,7 @@ import { Page } from 'src/app/classes/classes';
   standalone: true,
   imports: [IonIcon, IonButton],
 })
-export class DirectoryImagePickerComponent implements OnInit {
+export class DirectoryImagePickerComponent /*implements OnInit*/ {
   @Output() imagesSelected = new EventEmitter<Page[]>();
   @ViewChild('fileInput') fileInput: ElementRef|undefined;
 
@@ -31,7 +31,7 @@ export class DirectoryImagePickerComponent implements OnInit {
      addIcons({ folderOpenOutline });
   }
 
-  ngOnInit() {}
+  // ngOnInit() {}
 
 
   // Trigger the file input click

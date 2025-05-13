@@ -36,7 +36,7 @@ export class GeminiService implements OcrStrategy {
   }
 
   async performOcr(imageData: string, customPrompt: string): Promise<string> {
-    if (environment.useMockGeminiApi) {
+    if (environment.useMockGeminiApi && !this.apiKey) {
       return this.simulateGeminiProcessing(imageData, customPrompt);
     }
 

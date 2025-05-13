@@ -23,7 +23,7 @@ export class OcrService {
   ) {
 
     // Load the OCR strategy from localStorage
-    const strategyFromStorage = localStorage.getItem('ocrStrategy') || 'tesseract';
+    const strategyFromStorage = localStorage.getItem('ocrStrategy') || 'Tesseract';
     this.currentStrategy = strategyFromStorage as OcrStrategyType;
     console.log('setting ocr:', this.currentStrategy);
 

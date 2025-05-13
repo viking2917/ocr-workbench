@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { IonToolbar, IonTitle, IonHeader, IonContent, IonIcon, IonButton, IonInput, IonItem, IonList, IonSelect, IonSelectOption } from '@ionic/angular/standalone';
+import { FormsModule } from '@angular/forms';
+import { IonText, IonToolbar, IonTitle, IonHeader, IonContent, IonIcon, IonButton, IonInput, IonItem, IonList, IonSelect, IonSelectOption } from '@ionic/angular/standalone';
 
 import { OcrService } from '../services/ocr.service';
 import { addIcons } from 'ionicons';
@@ -12,7 +12,8 @@ import { newspaper, key, trashOutline } from 'ionicons/icons';
   templateUrl: './settings.page.html',
   styleUrls: ['./settings.page.scss'],
   standalone: true,
-  imports: [FormsModule, CommonModule, IonHeader, IonTitle, IonContent, IonIcon, IonButton, IonInput, IonToolbar, IonItem, IonList, IonSelect, IonSelectOption]
+  imports: [FormsModule, CommonModule, IonText, IonHeader, IonTitle, IonContent, IonIcon, IonButton, IonInput, 
+    IonToolbar, IonItem, IonList, IonSelect, IonSelectOption],
 })
 export class SettingsPage implements OnInit {
   ocrStrategies: string[] = [];
@@ -28,8 +29,11 @@ export class SettingsPage implements OnInit {
     this.geminiApiKey = localStorage.getItem('geminiApiKey') || '';
   }
 
-  handleChange(event: any) {
+  handleOcrChange(event: any) {
+    const selectedStrategy = event.detail.value;
+    console.log('Selected OCR strategy:', selectedStrategy);
     this.ocrService.setStorageStrategy(event.detail.value);
+    return false;
   }
 
   onApiKeyChange(event: any) {
