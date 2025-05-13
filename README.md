@@ -1,6 +1,7 @@
 # OCR workbench
 
-OCR Workbench is an environment for OCRing documents and producing a transcription, in either Markdown or HTML format. 
+OCR Workbench is an environment for OCRing documents and producing a transcription, in either Markdown or HTML format. Since even AI-generated OCR of old documents frequently requires
+significant editing, OCR Workbench includes tools to edit the raw OCR'd text.
 
 It was inspired by this [HackerNews post](https://news.ycombinator.com/item?id=43048698&utm_source=hackernewsletter&utm_medium=email&utm_term=ask_hn), and my own difficulties using off-the-shelf OCR to transcribe Colonial American documents, which have some unique challenges. 
 
@@ -70,6 +71,8 @@ This will insert the keys in the .env file into the environment file.
 
 Alternatively, you can set your Gemini API key on the Settings page. The key will be persisted in local storage, and used for Gemini calls, and no other purpose.
 
+To obtain a Gemini key, go here: [https://ai.google.dev/gemini-api/docs/api-key](https://ai.google.dev/gemini-api/docs/api-key).
+
 ## Gemini Quirks
 
 On some older documents, Gemini may issue a "RECITATION" error, indicating it thinks the data is part of its training materials, or under copyright. It can do this in error, as with our test data. There is an issue filed about it somewhere :)
@@ -98,7 +101,7 @@ allow selection of a region for OCR (for images with more than one column, e.g. 
 
 ability to insert forced page breaks, and / or not manually include page breaks in the markdown merged output
 
-ability to make special commands into the editor, e.g. a Center command that inserts 
+ability to make special commands into the editor, e.g. a Center command that inserts e.g.
 ::::: {.centered}
 ::::: 
 around a region
