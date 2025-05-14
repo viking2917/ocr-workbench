@@ -9,7 +9,7 @@ import { IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonBackButton,
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { addIcons } from 'ionicons';
-import { documentText, personCircle, search, pencilOutline, documentTextOutline, trash, add, swapHorizontal } from 'ionicons/icons';
+import { documentText, personCircle, search, pencilOutline, documentTextOutline, trash, add, swapHorizontal, downloadOutline, createOutline } from 'ionicons/icons';
 
 import JSZip from 'jszip';
 
@@ -43,7 +43,7 @@ export class ProjectPage {
     private alertController: AlertController,
     private textUtils: TextUtilsService,
   ) {
-    addIcons({ documentTextOutline, pencilOutline, trash, add, documentText, personCircle, search, swapHorizontal });
+    addIcons({ documentTextOutline, pencilOutline, trash, add, documentText, personCircle, search, swapHorizontal, downloadOutline, createOutline });
   }
 
   ionViewWillEnter() {
@@ -274,5 +274,23 @@ export class ProjectPage {
     this.projectService.saveProject(this.project).then(result => {
       console.log('saved', result);
     });
+  }
+
+  newPage() {
+    this.project.pages.push(new Page({imageData: this.blankImage()}));
+    this.projectService.saveProject(this.project).then(result => {
+      console.log('saved', result);
+    });
+  }
+
+  deletePage(index: number) {
+    this.project.pages.splice(index, 1);
+    this.projectService.saveProject(this.project).then(result => {
+      console.log('saved', result);
+    });
+  }
+  
+  blankImage() {
+    return `data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAIAQMAAAD+wSzIAAAABlBMVEX///+/v7+jQ3Y5AAAADklEQVQI12P4AIX8EAgALgAD/aNpbtEAAAAASUVORK5CYII`;
   }
 }

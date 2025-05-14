@@ -30,8 +30,12 @@
         Show Replacements Panel
       </ion-button>
       <ion-button fill="solid" color="primary" (click)="exportText()">
-        <ion-icon slot="start" name="pencil-outline"></ion-icon>
+        <ion-icon slot="start" name="download-outline"></ion-icon>
         Export Text
+      </ion-button>
+      <ion-button fill="solid" color="primary" (click)="newPage()">
+        <ion-icon slot="start" name="create-outline"></ion-icon>
+        New Page
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
@@ -75,6 +79,7 @@
 
             </ion-card-content>
             <ion-button (click)="openPage($index)" fill="clear">Edit</ion-button>
+            <ion-button (click)="deletePage($index)" fill="clear">Delete</ion-button>
             @if(page.editedText) {
             <ion-icon name="document-text" size="large"
               style="position: absolute; top: 8px; right: 8px; color: var(--ion-color-primary);"
